@@ -3,6 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.savedCollege.deleteMany();
+  await prisma.college.deleteMany();
+  await prisma.user.deleteMany();
+
   await prisma.college.createMany({
     data: [
       {
@@ -13,6 +17,8 @@ async function main() {
         description: "Top NIT in India",
         avgPackage: 12.5,
         placement: 95,
+        minRank: 1,
+        maxRank: 5000,
       },
       {
         name: "NIT Surathkal",
@@ -22,6 +28,8 @@ async function main() {
         description: "Known for strong placements",
         avgPackage: 11.8,
         placement: 93,
+        minRank: 5001,
+        maxRank: 8000,
       },
       {
         name: "NIT Warangal",
@@ -31,6 +39,8 @@ async function main() {
         description: "Premier engineering institute",
         avgPackage: 10.5,
         placement: 91,
+        minRank: 8001,
+        maxRank: 12000,
       },
       {
         name: "IIIT Hyderabad",
@@ -40,6 +50,8 @@ async function main() {
         description: "Excellent research opportunities",
         avgPackage: 20,
         placement: 98,
+        minRank: 1,
+        maxRank: 3000,
       },
       {
         name: "RVCE",
@@ -49,7 +61,9 @@ async function main() {
         description: "Top private engineering college",
         avgPackage: 9,
         placement: 88,
-      }
+        minRank: 12001,
+        maxRank: 25000,
+      },
     ],
   });
 
@@ -57,7 +71,10 @@ async function main() {
 }
 
 main()
-  .catch(console.error)
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
   .finally(async () => {
     await prisma.$disconnect();
   });

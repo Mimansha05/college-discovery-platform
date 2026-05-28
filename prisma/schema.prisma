@@ -26,13 +26,14 @@ model College {
   description String
   avgPackage  Float
   placement   Int
+  minRank     Int
+  maxRank     Int
 
-  savedBy     SavedCollege[]
-  cutoffs     RankCutoff[]
+  savedBy SavedCollege[]
 }
 
 model SavedCollege {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   userId    String
   collegeId String
 
@@ -40,13 +41,4 @@ model SavedCollege {
   college College @relation(fields: [collegeId], references: [id])
 
   @@unique([userId, collegeId])
-}
-
-model RankCutoff {
-  id        String  @id @default(cuid())
-  exam      String
-  maxRank   Int
-
-  collegeId String
-  college   College @relation(fields: [collegeId], references: [id])
 }
