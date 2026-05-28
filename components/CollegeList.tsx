@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SearchBar from "./SearchBar";
+import Filters from "./Filters";
 
 type College = {
   id: string;
@@ -18,16 +19,39 @@ type Props = {
 
 export default function CollegeList({ colleges }: Props) {
   const [search, setSearch] = useState("");
+  const [location, setLocation] = useState("");
+  const [rating, setRating] = useState("");
 
-  const filteredColleges = colleges.filter((college) =>
-    college.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredColleges = colleges.filter((college) => {
+    const matchesSearch = college.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesLocation =
+      !location || college.location === location;
+
+    const matchesRating =
+      !rating || college.rating >= Number(rating);
+
+    return (
+      matchesSearch &&
+      matchesLocation &&
+      matchesRating
+    );
+  });
 
   return (
     <>
       <SearchBar
         search={search}
         setSearch={setSearch}
+      />
+
+      <Filters
+        location={location}
+        setLocation={setLocation}
+        rating={rating}
+        setRating={setRating}
       />
 
       <div className="grid gap-4">
@@ -46,7 +70,9 @@ export default function CollegeList({ colleges }: Props) {
 
             <p>Fees: ₹{college.fees}</p>
 
-            <p>Average Package: ₹{college.avgPackage} LPA</p>
+            <p>
+              Average Package: ₹{college.avgPackage} LPA
+            </p>
           </div>
         ))}
       </div>
