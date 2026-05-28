@@ -1,3 +1,4 @@
+"use client";
 type FilterProps = {
   location: string;
   setLocation: (value: string) => void;

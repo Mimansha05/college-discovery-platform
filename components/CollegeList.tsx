@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import SearchBar from "./SearchBar";
 import Filters from "./Filters";
 
@@ -28,10 +29,10 @@ export default function CollegeList({ colleges }: Props) {
       .includes(search.toLowerCase());
 
     const matchesLocation =
-      !location || college.location === location;
+      location === "" || college.location === location;
 
     const matchesRating =
-      !rating || college.rating >= Number(rating);
+      rating === "" || college.rating >= Number(rating);
 
     return (
       matchesSearch &&
@@ -56,9 +57,10 @@ export default function CollegeList({ colleges }: Props) {
 
       <div className="grid gap-4">
         {filteredColleges.map((college) => (
-          <div
+          <Link
             key={college.id}
-            className="border rounded-lg p-4 shadow"
+            href={`/college/${college.id}`}
+            className="border rounded-lg p-4 shadow block hover:bg-gray-50"
           >
             <h2 className="text-xl font-semibold">
               {college.name}
@@ -73,7 +75,7 @@ export default function CollegeList({ colleges }: Props) {
             <p>
               Average Package: ₹{college.avgPackage} LPA
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </>
